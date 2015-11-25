@@ -479,8 +479,8 @@ module VagrantPlugins
             end
 
             if interface[:ipv6] != ""
-              return interface if this_netaddr == \
-                network_address(interface[:ipv6], interface[:ipv6_prefix])
+              return interface if IPAddr.new(interface[:ipv6])
+                .mask(interface[:ipv6_prefix]).include?(IPAddr.new(config[:ip]))
             end
           end
 
