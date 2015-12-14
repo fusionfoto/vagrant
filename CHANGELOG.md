@@ -57,10 +57,13 @@ IMPROVEMENTS:
   - provisioners/ansible+ansible_local: add support for ansible-galaxy [GH-2718]
   - provisioners/ansible+ansible_local: add support for group and host variables
       in the generated inventory [GH-6619]
+  - provisioners/ansible+ansible_local: add support for alphanumeric patterns
+      for groups in the generated inventory [GH-3539]
   - provisioners/ansible: add support for WinRM settings [GH-5086]
   - provisioners/ansible: add new `force_remote_user` option to control whether
     `ansible_ssh_user` parameter should be applied or not [GH-6348]
   - provisioners/ansible: show a warning when running from a Windows Host [GH-5292]
+  - pushes/local-exec: add support for specifying script args [GH-6661, GH-6660]
   - guests/slackware: add support for networking [GH-6514]
 
 BUG FIXES:
@@ -83,6 +86,8 @@ BUG FIXES:
   - core: catch errors setting env vars on Windows [GH-6017]
   - core: remove cached synced folders when they're removed from the
       Vagrantfile [GH-6567]
+  - core: use case-insensitive comparison for box checksum validations
+    [GH-6648, GH-6650]
   - commands/box: add command with `~` paths on Windows works [GH-5747]
   - commands/box: the update command supports CA settings [GH-4473]
   - commands/box: removing all versions and providers of a box will properly
@@ -108,7 +113,7 @@ BUG FIXES:
   - guests/darwin: advanced networking works with more NICs [GH-6386]
   - guests/debian: graceful shutdown works properly with newer releases [GH-5986]
   - guests/fedora: Preserve `localhost` entry when changing hostname [GH-6203]
-  - guests/fedora: Use dnf if it is available [GH-6301]
+  - guests/fedora: Use dnf if it is available [GH-6288]
   - guests/linux: when replacing a public SSH key, use POSIX-compliant
       sed flags [GH-6565]
   - guests/suse: DHCP network interfaces properly configured [GH-6502]
@@ -116,6 +121,8 @@ BUG FIXES:
   - providers/hyper-v: support generation 2 VMs [GH-6372]
   - providers/hyper-v: support VMs with more than one NIC [GH-4346]
   - providers/virtualbox: ignore "Unknown" status bridge interfaces [GH-6061]
+  - providers/virtualbox: only fix ipv6 interfaces that are in use
+      [GH-6586, GH-6552]
   - provisioners/ansible: use quotes for the `ansible_ssh_private_key_file`
     value in the generated inventory [GH-6209]
   - provisioners/ansible: don't show the `ansible-playbook` command when verbose
