@@ -526,6 +526,12 @@ module VagrantPlugins
 
               nics[adapter] ||= {}
               nics[adapter][:type] = type
+            elsif line =~ /^macaddress(\d+)="(.+?)"$/
+              adapter = $1.to_i
+              mac_address = $2.to_s
+
+              nics[adapter] ||= {}
+              nics[adapter][:mac_address] = mac_address
             elsif line =~ /^hostonlyadapter(\d+)="(.+?)"$/
               adapter = $1.to_i
               network = $2.to_s
