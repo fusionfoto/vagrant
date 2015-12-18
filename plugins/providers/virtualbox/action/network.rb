@@ -423,7 +423,10 @@ module VagrantPlugins
         # Misc. helpers
         #-----------------------------------------------------------------
         # Assigns the actual interface number of a network based on the
-        # enabled NICs on the virtual machine.
+        # enabled NICs on the virtual machine.  If possible, also assign
+        # a MAC address (normalized to lower-case, colon-separated format)
+        # for unambiguous matching regardless of the sort order of guest
+        # OS interface names.
         #
         # This interface number is used by the guest to configure the
         # NIC on the guest VM.
@@ -448,10 +451,27 @@ module VagrantPlugins
           # key to each network configuration.
           adapters.each_index do |i|
             adapter = adapters[i]
+            vm_adapter = vm_adapters[adapter[:adapter]]
             network = networks[i]
 
             # Figure out the interface number by simple lookup
             network[:interface] = adapter_to_interface[adapter[:adapter]]
+
+            # Propagate MAC address if possible
+            if vm_adapter[:mac_address]
+              # Noralize to ':' separated and lowercase.
+              vm_mac = vm_adapter[:mac_address].downcase
+              if vm_mac.length == 12
+                vm_mac = [vm_mac[0,2], vm_mac[2,2], vm_mac[4,2],
+                          vm_mac[6,2], vm_mac[8,2], vm_mac[10,2]].join(':')
+              end
+              if not network[:mac_address]
+                network[:mac_address] = vm_mac
+              end
+              if not adapter[:mac_address]
+                adapter[:mac_address] = vm_mac
+              end
+            end
           end
         end
 
