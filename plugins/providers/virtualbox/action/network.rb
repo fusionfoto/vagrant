@@ -459,11 +459,10 @@ module VagrantPlugins
 
             # Propagate MAC address if possible
             if vm_adapter[:mac_address]
-              # Noralize to ':' separated and lowercase.
+              # Normalize to ':' separated and lowercase.
               vm_mac = vm_adapter[:mac_address].downcase
               if vm_mac.length == 12
-                vm_mac = [vm_mac[0,2], vm_mac[2,2], vm_mac[4,2],
-                          vm_mac[6,2], vm_mac[8,2], vm_mac[10,2]].join(':')
+                vm_mac = vm_mac.scan(/../).join(':')
               end
               if not network[:mac_address]
                 network[:mac_address] = vm_mac
