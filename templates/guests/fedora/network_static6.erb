@@ -4,6 +4,10 @@ NM_CONTROLLED=no
 BOOTPROTO=static
 ONBOOT=yes
 IPV6INIT=yes
-IPV6ADDR=<%= options[:ip] %>
 DEVICE=<%= options[:device] %>
+IPV6ADDR=<%= options[:ip] %>/<%= options[:netmask] %>
+<% if options[:gateway] %>
+IPV6_DEFAULTGW=<%= options[:gateway] %>
+<% end %>
+PEERDNS=no
 #VAGRANT-END
