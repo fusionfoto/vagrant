@@ -45,6 +45,17 @@ module VagrantPlugins
               # Move new config into place
               mv '#{remote_path}' '#{final_path}'
 
+              # Reload NetworkManager config if possible
+              # Fixes regression from b621cc44fb63d93143915d2e744556ab36d80b17
+              # of Wed Jun 22 18:37:01 2016 -0700
+              if command -v nmcli &>/dev/null; then
+                if command -v systemctl &>/dev/null && systemctl -q is-enabled NetworkManager &>/dev/null; then
+                  nmcli c load #{final_path}
+                elif command -v service &>/dev/null && service NetworkManager status &>/dev/null; then
+                  nmcli c load #{final_path}
+                fi
+              fi
+
               # Bring the interface up
               ARPCHECK=no /sbin/ifup '#{network[:device]}'
             EOH
