@@ -436,6 +436,7 @@ module VagrantPlugins
 
           # Make a first pass to assign interface numbers by adapter location
           vm_adapters = @env[:machine].provider.driver.read_network_interfaces
+          @logger.debug("vm_adapters: #{vm_adapters.inspect}")
           vm_adapters.sort.each do |number, adapter|
             if adapter[:type] != :none
               # Not used, so assign the interface number and increment
@@ -443,6 +444,9 @@ module VagrantPlugins
               current += 1
             end
           end
+          @logger.debug("adapter_to_interface: #{adapter_to_interface.inspect}")
+          @logger.debug("adapters(pre): #{adapters.inspect}")
+          @logger.debug("networks(pre): #{networks.inspect}")
 
           # Make a pass through the adapters to assign the :interface
           # key to each network configuration.
@@ -453,6 +457,8 @@ module VagrantPlugins
             # Figure out the interface number by simple lookup
             network[:interface] = adapter_to_interface[adapter[:adapter]]
           end
+          @logger.debug("adapters(post): #{adapters.inspect}")
+          @logger.debug("networks(post): #{networks.inspect}")
         end
 
         #-----------------------------------------------------------------

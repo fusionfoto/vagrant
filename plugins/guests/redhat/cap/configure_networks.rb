@@ -15,8 +15,12 @@ module VagrantPlugins
 
           commands   = []
           interfaces = machine.guest.capability(:network_interfaces)
+          logger = Log4r::Logger.new(
+            "vagrant::plugins::guests::redhat::cap::configure_networks")
+          logger.debug("network_interfaces: #{interfaces.inspect}")
 
           networks.each.with_index do |network, i|
+            logger.debug("IDX: #{i}\t#{network.inspect}")
             network[:device] = interfaces[network[:interface]]
 
             # Render a new configuration
